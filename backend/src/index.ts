@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 
-import { PORT } from "./config/index";
+import { PORT } from "./config/env";
 
 const app = express();
 

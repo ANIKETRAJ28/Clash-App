@@ -7,6 +7,7 @@ import ejs from "ejs";
 // named imports
 import { PORT } from "./config/env.js";
 import { sendEmail } from "./config/mail.js";
+import { emailQueueName, emailQueue, queueWorker } from "./jobs/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app: Application = express();
@@ -20,7 +21,12 @@ app.set("views", path.resolve(__dirname, "./views"));
 
 app.get("/", async (req: Request, res: Response) => {
     const html = await ejs.renderFile(__dirname + `/views/emails/welcome.ejs`, {name: "Aniket Raj"});
-    await sendEmail("logelov307@hraifi.com", "Testing SMTP", html);
+    // await sendEmail("logelov307@hraifi.com", "Testing SMTP", html);
+    await emailQueue.add(emailQueueName, {
+        to: "yacojid818@paxnw.com",
+        subject: "Testing smtp",
+        body: html
+    });
     res.send({msg: "Email sent successfully!"});
 });
 
